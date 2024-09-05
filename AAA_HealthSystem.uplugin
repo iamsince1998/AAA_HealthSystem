@@ -1,0 +1,30 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "AAA_HealthSystem",
+	"Description": "Game Ready Health System for Single and Multiplayer Games.",
+	"Category": "Health",
+	"CreatedBy": "iamsince1998(Deepak)",
+	"CreatedByURL": "https://www.youtube.com/@iamsince1998",
+	"DocsURL": "https://discord.gg/trj6heMn",
+	"MarketplaceURL": "",
+	"SupportURL": "https://discord.gg/trj6heMn",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "AAA_HealthSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Mac",
+				"Android",
+				"IOS"
+			]
+		}
+	]
+}
