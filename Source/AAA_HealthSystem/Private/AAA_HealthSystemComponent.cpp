@@ -67,19 +67,19 @@ void UAAA_HealthSystemComponent::SetMaxHealth(float SetHealth)
 	OnMaxHealthChanged.Broadcast(MaxHealth);
 }
 
-void UAAA_HealthSystemComponent::AddHealth(bool bOverrideMaxHealth,float AddHealth, float& NewHealth)
+void UAAA_HealthSystemComponent::AddHealth(bool bOverrideMaxHealth,float ValueToAdd, float& NewHealth)
 {
 	if (bOverrideMaxHealth)
 	{
-		Health = Health + AddHealth;
+		Health = Health + ValueToAdd;
 	}
 	else
 	{
 		if (Health<MaxHealth)
 		{
-			if (MaxHealth - Health <=AddHealth)
+			if (MaxHealth - Health <= ValueToAdd)
 			{
-				Health = Health + AddHealth;
+				Health = Health + ValueToAdd;
 			}
 			else
 			{
@@ -92,12 +92,18 @@ void UAAA_HealthSystemComponent::AddHealth(bool bOverrideMaxHealth,float AddHeal
 	OnHealthBarUpdated.Broadcast(GetIsDead(), GetHealthBarValue());
 }
 
+void UAAA_HealthSystemComponent::AddMaxHealth( float ValueToAdd, float& NewMaxHealth)
+{
+	MaxHealth = MaxHealth + ValueToAdd;
+	NewMaxHealth = MaxHealth;
+	OnMaxHealthChanged.Broadcast(MaxHealth);
+	OnMaxHealthBarUpdated.Broadcast(GetIsDead(), GetMaxHealthBarValue());
+}
+
 void UAAA_HealthSystemComponent::ReduceHealth(bool& bIsDead, float ValueToReduce, float& NewHealth)
 {
 	Health = Health - ValueToReduce;
-	OnCurrentHealthChanged.Broadcast(GetIsDead(), Health);
-	OnHealthBarUpdated.Broadcast(GetIsDead(), GetHealthBarValue());
-	if (Health<=0)
+	if (Health <= 0)
 	{
 		bIsDead = true;
 	}
@@ -106,11 +112,26 @@ void UAAA_HealthSystemComponent::ReduceHealth(bool& bIsDead, float ValueToReduce
 		bIsDead = false;
 	}
 	NewHealth = Health;
+	OnCurrentHealthChanged.Broadcast(GetIsDead(), Health);
+	OnHealthBarUpdated.Broadcast(GetIsDead(), GetHealthBarValue());
+}
+
+void UAAA_HealthSystemComponent::ReduceMaxHealth( float ValueToReduce, float& NewMaxHealth)
+{
+	MaxHealth = MaxHealth - ValueToReduce;
+	NewMaxHealth = MaxHealth;
+	OnMaxHealthChanged.Broadcast(MaxHealth);
+	OnMaxHealthBarUpdated.Broadcast(GetIsDead(), GetMaxHealthBarValue());
 }
 
 float UAAA_HealthSystemComponent::GetHealthBarValue()
 {
 		return Health / HealthBarPercentage;
+}
+
+float UAAA_HealthSystemComponent::GetMaxHealthBarValue()
+{
+	return MaxHealth / HealthBarPercentage;
 }
 
 bool UAAA_HealthSystemComponent::GetIsDead()
@@ -121,6 +142,7 @@ bool UAAA_HealthSystemComponent::GetIsDead()
 	}
 	return false;
 }
+
 
 
 
