@@ -24,9 +24,11 @@ Features:
 ![image](https://github.com/user-attachments/assets/06bbfe9f-9280-4db2-b6ce-010639dd81cd)
 
 *Functions
-![image](https://github.com/user-attachments/assets/fa8a0c57-4805-4387-9f3a-7d7dfb25ea1d)
+![image](https://github.com/user-attachments/assets/fba969d6-af62-4106-8392-a140f6be12bd)
+
 
 
 
 *Fully Written in C++
-![Screenshot 2024-09-06 010321aaa](https://github.com/user-attachments/assets/cf6b7c63-faa7-452b-a2c8-facca5ac7480)
+![image](https://github.com/user-attachments/assets/d11cb838-09b8-416d-9e70-cce27cee2f27)
+
