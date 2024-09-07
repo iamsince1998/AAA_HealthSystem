@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.1",
 	"FriendlyName": "AAA_HealthSystem",
 	"Description": "Game Ready Health System for Single and Multiplayer Games.",
 	"Category": "Health",
