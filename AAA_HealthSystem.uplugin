@@ -7,8 +7,8 @@
 	"Category": "Health",
 	"CreatedBy": "iamsince1998(Deepak)",
 	"CreatedByURL": "https://www.youtube.com/@iamsince1998",
-	"DocsURL": "https://discord.gg/trj6heMn",
-	"MarketplaceURL": "",
+	"DocsURL": "https://github.com/iamsince1998/AAA_HealthSystem?tab=readme-ov-file#aaa_healthsystem",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/0d95a1d2df0044f2aa97f53f4f2ef2d3",
 	"SupportURL": "https://discord.gg/trj6heMn",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
@@ -23,7 +23,8 @@
 				"Win64",
 				"Mac",
 				"Android",
-				"IOS"
+				"IOS",
+                                "Linux"
 			]
 		}
 	]
