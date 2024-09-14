@@ -2,6 +2,7 @@
 
 
 #include "AAA_HealthSystemComponent.h"
+#include "TimerManager.h"
 
 // Sets default values for this component's properties
 UAAA_HealthSystemComponent::UAAA_HealthSystemComponent()
@@ -124,6 +125,33 @@ void UAAA_HealthSystemComponent::ReduceMaxHealth( float ValueToReduce, float& Ne
 	OnMaxHealthBarUpdated.Broadcast(GetIsDead(), GetMaxHealthBarValue());
 }
 
+void UAAA_HealthSystemComponent::RegenerateHealth(float InTime, float HealthToRegin)
+{
+	GetWorld()->GetTimerManager().SetTimer(AAATimerHandle, [this, HealthToRegin]()
+		{
+			// Check if current Health is less than MaxHealth
+			if (Health < MaxHealth)
+			{
+				// Increase health by HealthToRegin but not exceeding MaxHealth
+				Health = FMath::Min(Health + HealthToRegin, MaxHealth);
+				OnCurrentHealthChanged.Broadcast(GetIsDead(), Health);
+				OnHealthBarUpdated.Broadcast(GetIsDead(), GetHealthBarValue());
+				// Log current health for debugging
+				UE_LOG(LogTemp, Warning, TEXT("Current Health: %f, MaxHealth: %f"), Health, MaxHealth);
+			}
+			else
+			{
+				// Stop the timer when Health reaches or exceeds MaxHealth
+				GetWorld()->GetTimerManager().ClearTimer(AAATimerHandle);
+
+				// Log when the timer stops
+				UE_LOG(LogTemp, Warning, TEXT("Health reached MaxHealth, stopping timer."));
+			}
+		}, InTime, true);  // 'true' for looping timer
+}
+
+
+
 float UAAA_HealthSystemComponent::GetHealthBarValue()
 {
 		return Health / HealthBarPercentage;
@@ -142,6 +170,8 @@ bool UAAA_HealthSystemComponent::GetIsDead()
 	}
 	return false;
 }
+
+
 
 
 

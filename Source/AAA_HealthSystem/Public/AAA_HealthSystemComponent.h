@@ -12,7 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMaxHealthChanged,float,NewMaxHealth
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUpdateHealthBar,bool,bIsDead, float, NewProgressBarValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUpdateMaxHealthBar,bool,bIsDead, float, NewMaxProgressBarValue);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent),Blueprintable,BlueprintType)
 class AAA_HEALTHSYSTEM_API UAAA_HealthSystemComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -65,7 +65,10 @@ public:
 	void ReduceHealth(bool& bIsDead,float ValueToReduce,float& NewHealth);
 	//Reduce Health from Current Health For this Target Blueprint Class
 	UFUNCTION(BlueprintCallable, Category = "AAA|Health")
-	void ReduceMaxHealth(float ValueToReduce,float& NewMaxHealth);
+	void ReduceMaxHealth( float ValueToReduce, float& NewMaxHealth);
+	//Regenerate health (This Will Regin Health to MaxHealth)
+	UFUNCTION(BlueprintCallable, Category = "AAA|Health")
+	void RegenerateHealth( float InTime, float HealthToRegin) ;
 	//Get Health value in % for Progress bar ( this will return 1 if your health is 100 and HealthBarValueBasedOnPercentage is 100%)
 	UFUNCTION(BlueprintCallable,BlueprintPure, Category = "AAA|Health")
 	float GetHealthBarValue( );
@@ -90,4 +93,12 @@ public:
 	//This Event will be Called When MaxHealth value will be updated, this will return 1 if your Maxhealth is 100 and HealthBarPercentage is 100% , so you can directly assign it to a progress bar
 	UPROPERTY(BlueprintAssignable, Category = "AAA|Health")
 	FUpdateMaxHealthBar OnMaxHealthBarUpdated;
+
+
+
+private:
+
+	// Timer handle for managing the timer
+	FTimerHandle AAATimerHandle;
+
 };
