@@ -35,6 +35,9 @@ void UAAA_HealthSystemComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 	DOREPLIFETIME(UAAA_HealthSystemComponent, Health);
 	DOREPLIFETIME(UAAA_HealthSystemComponent, MaxHealth);
 	DOREPLIFETIME(UAAA_HealthSystemComponent, HealthBarPercentage);
+	DOREPLIFETIME(UAAA_HealthSystemComponent, Armor);
+	DOREPLIFETIME(UAAA_HealthSystemComponent, MaxArmor);
+	DOREPLIFETIME(UAAA_HealthSystemComponent, ArmorBarPercentage);
 }
 
 
