@@ -1,14 +1,14 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.2",
+	"VersionName": "1.3",
 	"FriendlyName": "AAA_HealthSystem",
 	"Description": "Game Ready Health System for Single and Multiplayer Games.",
 	"Category": "Health",
 	"CreatedBy": "iamsince1998(Deepak)",
 	"CreatedByURL": "https://www.youtube.com/@iamsince1998",
 	"DocsURL": "https://youtu.be/kp6ago0b3R4",
-	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/0d95a1d2df0044f2aa97f53f4f2ef2d3",
+	"MarketplaceURL": "https://www.fab.com/listings/c39672c7-a46f-4e33-be6e-6fcb85ea0f78",
 	"SupportURL": "https://discord.gg/trj6heMn",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
@@ -24,7 +24,7 @@
 				"Mac",
 				"Android",
 				"IOS",
-                                "Linux"
+				"Linux"
 			]
 		}
 	]
