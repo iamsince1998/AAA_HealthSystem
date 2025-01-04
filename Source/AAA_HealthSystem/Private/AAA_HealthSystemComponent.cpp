@@ -51,11 +51,23 @@ float UAAA_HealthSystemComponent::GetCurrentHealth()
 	return Health;
 }
 
+float UAAA_HealthSystemComponent::GetCurrentArmor()
+{
+	return Armor;
+}
+
 void UAAA_HealthSystemComponent::SetCurrentHealth(float SetHealth)
 {
 	Health = SetHealth;
 	OnCurrentHealthChanged.Broadcast( GetIsDead(),Health);
 	OnHealthBarUpdated.Broadcast( GetIsDead(), GetHealthBarValue());
+}
+
+void UAAA_HealthSystemComponent::SetCurrentArmor(float SetArmor)
+{
+	Armor = SetArmor;
+	OnCurrentArmorChanged.Broadcast(Armor);
+	OnArmorBarUpdated.Broadcast(GetArmorBarValue());
 }
 
 float UAAA_HealthSystemComponent::GetMaxHealth()
@@ -104,6 +116,25 @@ void UAAA_HealthSystemComponent::AddMaxHealth( float ValueToAdd, float& NewMaxHe
 
 void UAAA_HealthSystemComponent::ReduceHealth(bool& bIsDead, float ValueToReduce, float& NewHealth)
 {
+	if (bHasArmor)
+	{
+		//if only armor is enough to contain that damage we will return from here
+		if (Armor > 0 && Armor >= ValueToReduce * ArmorDamageMultiplier)
+		{
+				Armor -= ValueToReduce * ArmorDamageMultiplier;
+				OnCurrentArmorChanged.Broadcast(Armor);
+				OnArmorBarUpdated.Broadcast(GetArmorBarValue());
+				NewHealth = Health;
+				return;
+		}
+		float l_ValueToReduceAfterArmor = ValueToReduce * ArmorDamageMultiplier - Armor;
+		ValueToReduce = l_ValueToReduceAfterArmor / ArmorDamageMultiplier;
+		//at this point armor is zero and we get new ValueToReduce from Health
+		Armor = 0;
+		OnCurrentArmorChanged.Broadcast(Armor);
+		OnArmorBarUpdated.Broadcast(GetArmorBarValue());
+
+	}
 	Health = Health - ValueToReduce;
 	if (Health <= 0)
 	{
@@ -130,6 +161,11 @@ void UAAA_HealthSystemComponent::RegenerateHealth(float InTime, float HealthToRe
 {
 	GetWorld()->GetTimerManager().SetTimer(AAATimerHandle, [this, HealthToRegin]()
 		{
+			if (Health <= 0)
+			{
+				// Stop the timer if dead
+				GetWorld()->GetTimerManager().ClearTimer(AAATimerHandle);
+			}
 			// Check if current Health is less than MaxHealth
 			if (Health < MaxHealth)
 			{
@@ -142,11 +178,27 @@ void UAAA_HealthSystemComponent::RegenerateHealth(float InTime, float HealthToRe
 			}
 			else
 			{
-				// Stop the timer when Health reaches or exceeds MaxHealth
-				GetWorld()->GetTimerManager().ClearTimer(AAATimerHandle);
+				if (bHasArmor && bRegenerateArmor)
+				{
+					if (Armor < MaxArmor)
+					{
+						// Increase Armor by HealthToRegin but not exceeding MaxArmor
+						Armor = FMath::Min(Armor + HealthToRegin, MaxArmor);
+						OnCurrentArmorChanged.Broadcast(Armor);
+						OnArmorBarUpdated.Broadcast(GetArmorBarValue());
+						// Log current Armor for debugging
+						UE_LOG(LogTemp, Warning, TEXT("Current Armor: %f, MaxHealth: %f"), Armor, MaxArmor);
+					}
+				}
+				if (Armor >= MaxArmor)
+				{
+					// Stop the timer when Health reaches or exceeds MaxHealth
+					GetWorld()->GetTimerManager().ClearTimer(AAATimerHandle);
 
-				// Log when the timer stops
-				UE_LOG(LogTemp, Warning, TEXT("Health reached MaxHealth, stopping timer."));
+					// Log when the timer stops
+					UE_LOG(LogTemp, Warning, TEXT("Health reached MaxHealth, stopping timer."));
+				}
+				
 			}
 		}, InTime, true);  // 'true' for looping timer
 }
@@ -158,9 +210,19 @@ float UAAA_HealthSystemComponent::GetHealthBarValue()
 		return Health / HealthBarPercentage;
 }
 
+float UAAA_HealthSystemComponent::GetArmorBarValue()
+{
+	return Armor/ArmorBarPercentage;
+}
+
 float UAAA_HealthSystemComponent::GetMaxHealthBarValue()
 {
 	return MaxHealth / HealthBarPercentage;
+}
+
+float UAAA_HealthSystemComponent::GetMaxArmorBarValue()
+{
+	return MaxArmor/ArmorBarPercentage;
 }
 
 bool UAAA_HealthSystemComponent::GetIsDead()
