@@ -7,9 +7,10 @@ Multiplayer Ready .
 
 *If you need any feature just ask me on Discord :- https://discord.gg/vxn4gadpwC
 
-New Update V1.3:-
+New Update V1.5:-
 
-_Armor Added
+_More Server Authoratitve Approch
+_UE 5.7 support
 
 _To Get Demo Project switch the branch to project and download it.
 
